@@ -52,7 +52,11 @@ body { background-color: var(--bg-primary); color: var(--text-main); transition:
 
 /* HERO SECTION */
 .hero {
-    height: 70vh; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1200') center/cover;
+    height: 70vh;
+    background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('https://i.imgur.com/Lr94SZb.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
     display: flex; align-items: center; justify-content: center; text-align: center; color: #fff; padding: 0 20px;
 }
 .hero-content h1 { font-size: 3.5rem; margin-bottom: 1rem; color: var(--accent); text-shadow: 2px 2px 4px rgba(0,0,0,0.6); }
