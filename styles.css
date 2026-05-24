@@ -53,7 +53,7 @@ body { background-color: var(--bg-primary); color: var(--text-main); transition:
 /* HERO SECTION */
 .hero {
     height: 70vh;
-    background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('https://i.imgur.com/Lr94SZb.png');
+    background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('https://i.imgur.com/x0lZTIy.png');
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
