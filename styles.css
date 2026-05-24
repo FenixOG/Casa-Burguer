@@ -133,3 +133,124 @@ body { background-color: var(--bg-primary); color: var(--text-main); transition:
     .sidebar { width: 100%; height: auto; }
     .hero-content h1 { font-size: 2.2rem; }
 }
+
+/* ==========================================================================
+   SISTEMA DE MICRO-INTERACCIONES Y EFECTOS PREMIUM (CASA BURGUER)
+   ========================================================================== */
+
+/* 1. DISEÑO BASE DE BOTONES PRINCIPALES */
+.btn-primary, .btn-checkout {
+    position: relative;
+    background: linear-gradient(135deg, var(--accent) 0%, #f39c12 100%);
+    color: #000000;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    overflow: hidden;
+}
+
+/* Estado: Hover (Pasar el cursor por encima) - Se eleva y brilla */
+.btn-primary:hover, .btn-checkout:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(243, 156, 18, 0.5);
+    filter: brightness(1.08);
+}
+
+/* Estado: Active (El milisegundo exacto del CLIC) - Efecto de hundimiento físico */
+.btn-primary:active, .btn-checkout:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 8px rgba(243, 156, 18, 0.4);
+    filter: brightness(0.95);
+}
+
+
+/* 2. BOTÓN DE FILTROS DE CATEGORÍAS (Efecto Cápsula Inteligente) */
+.btn-filter {
+    padding: 10px 22px;
+    border-radius: 25px;
+    border: 2px solid var(--border-color);
+    background: var(--bg-primary);
+    color: var(--text-main);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Hover en Filtros */
+.btn-filter:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(255, 193, 7, 0.05);
+}
+
+/* Estado Activo / Seleccionado de la Categoría */
+.btn-filter.active {
+    background: var(--text-main);
+    color: var(--bg-primary);
+    border-color: var(--text-main);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-filter.active:active {
+    transform: scale(0.95);
+}
+
+
+/* 3. BOTÓN FLOTANTE DEL CARRITO (Con contador saltarín) */
+.btn-cart {
+    background: #000000;
+    color: var(--accent);
+    border: 2px solid var(--accent);
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.btn-cart:hover {
+    background: var(--accent);
+    color: #000000;
+    transform: scale(1.05);
+}
+
+/* Animación cuando se agrega un producto (Añade la clase .pulse desde JS si quieres, o déjalo nativo) */
+#cart-count {
+    background: var(--danger);
+    color: white;
+    padding: 2px 7px;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    min-width: 18px;
+    text-align: center;
+    display: inline-block;
+}
+
+
+/* 4. MEJORA VISUAL PARA LAS TARJETAS DE HAMBURGUESAS */
+.product-card {
+    border: 1px solid var(--border-color);
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    border-color: transparent;
+}
+
+/* Efecto de zoom suave en la foto de la hamburguesa al pasar el mouse */
+.product-card .product-img {
+    transition: transform 0.5s ease;
+}
+.product-card:hover .product-img {
+    transform: scale(1.04);
+}
