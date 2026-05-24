@@ -7,14 +7,6 @@ Ecosistema digital completo para la gestión de ventas y pedidos online de la ha
 * **Carrito en Tiempo Real:** Gestión reactiva de productos, cálculos automatizados de costos con pasarela simulada QR.
 * **Panel de Control Administrativo:** Métricas avanzadas, control de flujo en cocina con alertas sonoras en vivo, gestión completa de productos e ingresos con gráficas integradas por Chart.js.
 
-## ⚙️ Configuración e Instalación en Firebase
-
-Para activar la base de datos y la persistencia del proyecto:
-
-1. Ingresa a [Firebase Console](https://console.firebase.google.com/) y crea un nuevo proyecto llamado `CasaBurguer`.
-2. Habilita **Firebase Authentication** activando el proveedor de **Correo electrónico y contraseña**. Crea tu usuario administrador (ej: `admin@casaburguer.com` y clave de acceso).
-3. Habilita **Cloud Firestore** en modo de producción e inicializa las siguientes reglas en la pestaña correspondientes de la consola:
-
 ```javascript
 rules_version = '2';
 service cloud.firestore {
