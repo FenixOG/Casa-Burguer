@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin - Casa Burguer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="admin-body">
+
+    <div id="login-container" class="login-wrapper">
+        <div class="login-card">
+            <img src="https://i.imgur.com/0ghT0Yz.png" alt="Logo" class="login-logo">
+            <h2>Acceso Administrativo</h2>
+            <form id="login-form">
+                <input type="email" id="login-email" placeholder="Correo electrónico" required>
+                <input type="password" id="login-password" placeholder="Contraseña" required>
+                <button type="submit" class="btn-primary w-100">Ingresar</button>
+            </form>
+            <p id="login-error" class="error-msg"></p>
+        </div>
+    </div>
+
+    <div id="admin-panel" class="admin-layout hidden">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="https://i.imgur.com/0ghT0Yz.png" alt="Logo" class="logo-sm">
+                <h3>Admin CasaBurguer</h3>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-target="dashboard"><i class="fas fa-chart-line"></i> Dashboard</button>
+                <button class="nav-item" data-target="pedidos"><i class="fas fa-utensils"></i> Pedidos <span id="badge-pedidos" class="badge">0</span></button>
+                <button class="nav-item" data-target="productos"><i class="fas fa-hamburger"></i> Productos</button>
+                <button class="nav-item" data-target="facturas"><i class="fas fa-file-invoice-dollar"></i> Facturas</button>
+                <button class="nav-item" data-target="ventas"><i class="fas fa-history"></i> Ventas</button>
+                <button id="btn-logout" class="nav-item logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <h2 id="current-view-title">Dashboard</h2>
+                <div class="user-info">
+                    <span id="admin-user-email">admin@casaburguer.com</span>
+                </div>
+            </header>
+
+            <section id="view-dashboard" class="admin-view">
+                <div class="stats-grid">
+                    <div class="stat-card"><h3>Total Ventas</h3><p id="stat-ventas">$0</p></div>
+                    <div class="stat-card warning"><h3>Pedidos Pendientes</h3><p id="stat-pendientes">0</p></div>
+                    <div class="stat-card success"><h3>Pedidos Confirmados</h3><p id="stat-confirmados">0</p></div>
+                    <div class="stat-card info"><h3>Facturas Confirmadas</h3><p id="stat-facturas">0</p></div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="salesChart"></canvas>
+                </div>
+            </section>
+
+            <section id="view-pedidos" class="admin-view hidden">
+                <h3>Cola de Pedidos en Tiempo Real</h3>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Cliente</th><th>Teléfono</th><th>Dirección</th><th>Total</th><th>Pago</th><th>Estado</th><th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-pedidos-body"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="view-productos" class="admin-view hidden">
+                <div class="section-header">
+                    <h3>Catálogo de Productos</h3>
+                    <button class="btn-primary" id="btn-open-prod-modal"><i class="fas fa-plus"></i> Nuevo Producto</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Imagen</th><th>Nombre</th><th>Categoría</th><th>Precio</th><th>Stock</th><th>Estado</th><th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-productos-body"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="view-facturas" class="admin-view hidden">
+                <h3>Historial de Facturación</h3>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID Factura</th><th>Cliente</th><th>Fecha</th><th>Subtotal</th><th>Total</th><th>Estado</th><th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-facturas-body"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="view-ventas" class="admin-view hidden">
+                <div class="filters-bar">
+                    <label>Filtrar por Fecha:</label>
+                    <input type="date" id="filter-date-input">
+                    <button class="btn-primary" id="btn-clear-filter">Limpiar Filtro</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Fecha / Hora</th><th>ID Venta</th><th>Monto</th><th>Detalles</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-ventas-body"></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-prod-modal">&times;</span>
+            <h3 id="prod-modal-title">Agregar Nuevo Producto</h3>
+            <form id="product-form">
+                <input type="hidden" id="prod-id">
+                <div class="form-group">
+                    <label>Nombre del Producto</label>
+                    <input type="text" id="prod-name" required>
+                </div>
+                <div class="form-group">
+                    <label>Categoría</label>
+                    <select id="prod-category" required>
+                        <option value="burguers">Burguers</option>
+                        <option value="combos">Combos</option>
+                        <option value="bebidas">Bebidas</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Precio ($)</label>
+                    <input type="number" id="prod-price" required>
+                </div>
+                <div class="form-group">
+                    <label>Stock Disponible</label>
+                    <input type="number" id="prod-stock" required>
+                </div>
+                <div class="form-group">
+                    <label>Imagen del Producto</label>
+                    <input type="file" id="prod-image-file" accept="image/*">
+                </div>
+                <div class="form-group-row">
+                    <label><input type="checkbox" id="prod-available" checked> Disponible para la venta</label>
+                </div>
+                <button type="submit" class="btn-primary w-100">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <audio id="alert-sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-500.wav" preload="auto"></audio>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+
+    <script src="app.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

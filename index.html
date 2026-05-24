@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casa Burguer - Fast Food Premium desde 2020</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="https://i.imgur.com/0ghT0Yz.png" alt="Casa Burguer Logo" class="logo">
+            <span>Casa Burguer</span>
+        </div>
+        <nav class="nav-menu">
+            <a href="#home">Inicio</a>
+            <a href="#menu">Menú</a>
+            <a href="#promos">Promociones</a>
+            <a href="#nosotros">Nosotros</a>
+            <button id="theme-toggle" class="btn-icon"><i class="fas fa-moon"></i></button>
+            <button id="cart-btn" class="btn-cart">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="cart-count">0</span>
+            </button>
+            <a href="admin.html" class="btn-admin-nav"><i class="fas fa-user-shield"></i></a>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Sabor Premium desde 2020</h1>
+            <p>Hamburguesas artesanales con carne 100% seleccionada, ingredientes frescos y el toque secreto de la casa.</p>
+            <a href="#menu" class="btn-primary">Ver Menú</a>
+        </div>
+    </section>
+
+    <section id="promos" class="section-container">
+        <h2 class="section-title">🔥 Promociones Imperdibles</h2>
+        <div class="promos-grid" id="promos-container">
+            </div>
+    </section>
+
+    <section id="menu" class="section-container">
+        <h2 class="section-title">🍔 Nuestro Menú</h2>
+        <div class="categories-filter">
+            <button class="btn-filter active" data-category="todos">Todos</button>
+            <button class="btn-filter" data-category="burguers">Burguers</button>
+            <button class="btn-filter" data-category="combos">Combos</button>
+            <button class="btn-filter" data-category="bebidas">Bebidas</button>
+        </div>
+        <div class="products-grid" id="products-container">
+            <p class="loading">Cargando delicias...</p>
+        </div>
+    </section>
+
+    <section id="nosotros" class="about-section">
+        <div class="about-info">
+            <h2>Sobre Casa Burguer</h2>
+            <p>Nacimos en el año 2020 con una misión clara: revolucionar el concepto de fast food transformándolo en una experiencia premium. Cada detalle cuenta, desde el pan horneado diariamente hasta nuestras salsas artesanales.</p>
+            <div class="contact-details">
+                <p><i class="fas fa-map-marker-alt"></i> Av. Principal Con Calle 45, Cali, Colombia</p>
+                <p><i class="fas fa-phone"></i> +57 300 123 4567</p>
+            </div>
+        </div>
+        <div class="about-map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3982.678123456789!2d-76.532!3d3.451!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zM8KwMjcnMDMuNiJOIDc2wrAzMSc1NS4yIlc!5e0!3m2!1ses!2sco!4v1710000000000!5m2!1ses!2sco" width="100%" height="300" style="border:0; border-radius:12px;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+    </section>
+
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-cart">&times;</span>
+            <h2><i class="fas fa-shopping-basket"></i> Tu Pedido</h2>
+            <div id="cart-items-container">
+                </div>
+            <div class="cart-summary">
+                <h3>Total: <span id="cart-total-val">$0</span></h3>
+            </div>
+            
+            <form id="checkout-form" class="checkout-form">
+                <h3>Datos de Entrega</h3>
+                <input type="text" id="cust-name" placeholder="Nombre completo" required>
+                <input type="tel" id="cust-phone" placeholder="Número de Teléfono" required>
+                <input type="text" id="cust-address" placeholder="Dirección de residencia" required>
+                <input type="url" id="cust-maps" placeholder="Enlace de ubicación Google Maps (Opcional)">
+                
+                <label for="cust-payment">Método de Pago:</label>
+                <select id="cust-payment" required>
+                    <option value="Efectivo">Efectivo contra entrega</option>
+                    <option value="Transferencia QR">Transferencia (Ver QR al finalizar)</option>
+                </select>
+                
+                <textarea id="cust-notes" placeholder="Notas adicionales (Ej: sin cebolla, traer cambio de $50k)"></textarea>
+                
+                <button type="submit" class="btn-checkout">Confirmar y Enviar Pedido</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="qr-modal" class="modal">
+        <div class="modal-content text-center">
+            <h2>¡Pedido Recibido! 🎉</h2>
+            <p>Para reportar tu pago por transferencia, escanea el siguiente código QR:</p>
+            <div class="qr-container">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://casaburguer.com/pagos" alt="QR Pago">
+            </div>
+            <p class="qr-sub">Monto total: <strong id="qr-total-amout"></strong></p>
+            <button id="btn-close-qr" class="btn-primary">Entendido</button>
+        </div>
+    </div>
+
+    <a href="https://wa.me/573001234567?text=Hola%20Casa%20Burguer!%20Quiero%20ordenar." class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+    
+    <script src="app.js"></script>
+</body>
+</html>
