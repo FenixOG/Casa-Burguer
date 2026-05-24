@@ -140,7 +140,7 @@ function createProductCard(docId, product) {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'btn-primary w-100';
-    button.textContent = 'Agregar al Carrito';
+    button.textContent = 'Realizar Pedido';
     button.addEventListener('click', () => window.addToCart(docId, product.name || 'Producto', Number(product.price) || 0));
     info.appendChild(button);
 
