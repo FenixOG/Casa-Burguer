@@ -79,17 +79,12 @@ function playAlertSound() {
     alertSound.play().catch(() => console.log('Audio esperando interacción'));
 }
 
-function getStorageService() {
-    if (typeof firebase === 'undefined' || typeof firebase.storage !== 'function') {
-        return null;
-    }
-    return firebase.storage();
-}
-
 function resetProductModal() {
     if (productForm) productForm.reset();
     const prodId = document.getElementById('prod-id');
+    const prodImageUrl = document.getElementById('prod-image-url');
     if (prodId) prodId.value = '';
+    if (prodImageUrl) prodImageUrl.value = '';
     adminState.currentProductImageUrl = '';
     if (productModalTitle) productModalTitle.innerText = 'Agregar Nuevo Producto';
 }
@@ -485,17 +480,15 @@ window.editarProdModal = function (id, name, cat, price, stock, avail, imageUrl)
     const prodName = document.getElementById('prod-name');
     const prodCategory = document.getElementById('prod-category');
     const prodPrice = document.getElementById('prod-price');
-    const prodStock = document.getElementById('prod-stock');
     const prodAvailable = document.getElementById('prod-available');
-    const prodImageFile = document.getElementById('prod-image-file');
+    const prodImageUrl = document.getElementById('prod-image-url');
 
     if (prodId) prodId.value = id;
     if (prodName) prodName.value = name;
     if (prodCategory) prodCategory.value = cat;
     if (prodPrice) prodPrice.value = price;
-    if (prodStock) prodStock.value = stock;
     if (prodAvailable) prodAvailable.checked = (avail === 'true' || avail === true);
-    if (prodImageFile) prodImageFile.value = '';
+    if (prodImageUrl) prodImageUrl.value = imageUrl || '';
 
     adminState.currentProductImageUrl = imageUrl || '';
     if (productModalTitle) productModalTitle.innerText = 'Editar Producto';
@@ -587,23 +580,21 @@ if (productForm) {
         const name = document.getElementById('prod-name')?.value.trim() || '';
         const category = document.getElementById('prod-category')?.value || 'burguers';
         const price = parseFloat(document.getElementById('prod-price')?.value || '0');
-        const stock = parseInt(document.getElementById('prod-stock')?.value || '0', 10);
         const available = document.getElementById('prod-available')?.checked || false;
-        const file = document.getElementById('prod-image-file')?.files?.[0] || null;
+        const imageUrlInput = document.getElementById('prod-image-url');
+        const imageUrl = imageUrlInput ? imageUrlInput.value.trim() : '';
 
-        if (!name || Number.isNaN(price) || Number.isNaN(stock)) {
+        if (!name || Number.isNaN(price)) {
             alert('Completa correctamente los datos del producto.');
             return;
         }
 
-        let imageUrl = adminState.currentProductImageUrl || '';
-        const storageService = getStorageService();
-
         try {
-            if (file && storageService) {
-                const storageRef = storageService.ref(`productos/${Date.now()}_${file.name}`);
-                const uploadResult = await storageRef.put(file);
-                imageUrl = await uploadResult.ref.getDownloadURL();
+            let stock = 0;
+
+            if (id) {
+                const currentDoc = await db.collection('productos').doc(id).get();
+                stock = currentDoc.exists ? Number(currentDoc.data().stock) || 0 : 0;
             }
 
             const payload = {
@@ -616,6 +607,8 @@ if (productForm) {
 
             if (imageUrl) {
                 payload.imageUrl = imageUrl;
+            } else if (id && adminState.currentProductImageUrl) {
+                payload.imageUrl = adminState.currentProductImageUrl;
             }
 
             if (id) {
@@ -628,7 +621,7 @@ if (productForm) {
             resetProductModal();
         } catch (error) {
             console.error('No se pudo guardar el producto:', error);
-            alert('No fue posible guardar el producto.');
+            alert('No fue posible guardar el producto. Revisa la consola para más detalles.');
         }
     });
 }
